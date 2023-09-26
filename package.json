@@ -3,11 +3,11 @@
     "express": "^4.18.2"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node app.js"
   },
   "name": "clase6servidoreswebexpress",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "app.js",
   "devDependencies": {},
   "keywords": [],
   "author": "",

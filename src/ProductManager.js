@@ -1,6 +1,8 @@
 import { existsSync, promises } from "fs"
 const path = 'Products.json'
 
+// ----------
+
 class ProductManager {
 
 	async getProducts(queryObj) {
@@ -18,22 +20,11 @@ class ProductManager {
 		}
 	}
 
+	// ----------
+
 	async addProduct(product) {
 		try {
-			const { title, description, price, thumbnail, code, stock } = product
-
-			if (!title || !description || !price || !thumbnail || !code || !stock) {
-				console.log('Todos los campos son obligatorios')
-				return
-			}
-
-			const codeExiste = this.products.some(product => product.code === code)
-			if (codeExiste) {
-				console.log('El código ya está en uso')
-				return
-			}
-
-			const products = await this.getProducts()
+			const products = await this.getProducts({})
 			let id
 			!products.length ? id = 1 : id = products[products.length - 1].id + 1
 			products.push({ id, ...product })
@@ -42,6 +33,8 @@ class ProductManager {
 			return error
 		}
 	}
+
+	// ----------
 
 	async getProductById(id) {
 		try {
@@ -55,9 +48,13 @@ class ProductManager {
 
 	async deleteProduct(id) {
 		try {
-			const products = await this.getProducts()
-			const productsNew = products.filter(product => product.id !== id)
-			await promises.writeFile(path, JSON.stringify(productsNew))
+			const products = await this.getProducts({})
+			const product = products.find(product => product.id === id)
+			if (product) {
+				const productsNew = products.filter(product => product.id !== id)
+				await promises.writeFile(path, JSON.stringify(productsNew))
+			}
+			return product
 		} catch (error) {
 			return error
 		}
@@ -70,11 +67,11 @@ class ProductManager {
 			if (index === -1) {
 				return null
 			}
-			const productUpdated = {...products[index], ...obj}
+			const productUpdated = { ...products[index], ...obj }
 			products.splice(index, 1, productUpdated)
 			await promises.writeFile(path, JSON.stringify(products))
 			return productUpdated
-		} catch (error) {	
+		} catch (error) {
 			return error
 		}
 	}
@@ -84,8 +81,8 @@ class ProductManager {
 // 	title: 'Teclado',
 // 	description: 'Mecanico',
 // 	price: 1000,
-// 	thumbnail: '/img/teclado',
-// 	code: 123,
+// 	thumbnail: ['/img/teclado'],
+// 	code: 100,
 // 	stock: 20
 // }
 
@@ -93,8 +90,8 @@ class ProductManager {
 // 	title: 'Mouse',
 // 	description: 'Inalambrico',
 // 	price: 500,
-// 	thumbnail: '/img/mouse',
-// 	code: 124,
+// 	thumbnail: ['/img/mouse'],
+// 	code: 101,
 // 	stock: 20
 // }
 
@@ -102,16 +99,78 @@ class ProductManager {
 // 	title: 'Monitor',
 // 	description: 'HDMI',
 // 	price: 1500,
-// 	thumbnail: '/img/monitor',
-// 	code: 125,
+// 	thumbnail: ['/img/monitor'],
+// 	code: 102,
 // 	stock: 5
+// }
+
+// const product4 = {
+// 	title: 'Parlantes',
+// 	description: 'Bluetooth',
+// 	price: 100,
+// 	thumbnail: ['/img/parlantes'],
+// 	code: 103,
+// 	stock: 50
+// }
+
+// const product5 = {
+// 	title: 'Gabinete',
+// 	description: 'Standard',
+// 	price: 150,
+// 	thumbnail: ['/img/gabinete'],
+// 	code: 104,
+// 	stock: 10
+// }
+
+// const product6 = {
+// 	title: 'Auriculares',
+// 	description: 'Gamer',
+// 	price: 200,
+// 	thumbnail: ['/img/auriculares'],
+// 	code: 105,
+// 	stock: 15
+// }
+
+// const product7 = {
+// 	title: 'CPU',
+// 	description: 'Ryzen 3200G',
+// 	price: 250,
+// 	thumbnail: ['/img/cpu'],
+// 	code: 106,
+// 	stock: 20
+// }
+
+// const product8 = {
+// 	title: 'Motherboard',
+// 	description: 'A520',
+// 	price: 200,
+// 	thumbnail: ['/img/motherboard'],
+// 	code: 107,
+// 	stock: 20
+// }
+
+// const product9 = {
+// 	title: 'Memoria',
+// 	description: 'DDR4',
+// 	price: 100,
+// 	thumbnail: ['/img/memoria'],
+// 	code: 108,
+// 	stock: 40
+// }
+
+// const product10 = {
+// 	title: 'Disco',
+// 	description: 'SSD',
+// 	price: 50,
+// 	thumbnail: ['/img/disco'],
+// 	code: 109,
+// 	stock: 50
 // }
 
 // async function test() {
 // 	const manager1 = new ProductManager()
-// 	await manager1.addProduct(product2)
-// 	const products = await manager1.getProductById(1)
-// 	// 	await manager1.deleteProduct(2)
+// 	await manager1.addProduct(product1)
+// 	const products = await manager1.getProducts()
 // 	console.log(products)
 // }
 // test()
