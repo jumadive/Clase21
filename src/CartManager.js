@@ -1,5 +1,6 @@
 import { existsSync, promises } from "fs"
-const path = 'Cart.json'
+import { manager1 } from './ProductManager.js'
+const path = 'Carts.json'
 
 class CartManager {
 
@@ -16,53 +17,46 @@ class CartManager {
 		}
 	}
 
+	// ----------
+
 	async createCart() {
 		try {
 			const carts = await this.getCarts()
 			let id
 			!carts.length ? id = 1 : id = carts[carts.length - 1].id + 1
-			const cart = { id, products: [] }
-			carts.push(cart)
+			const newCart = { id, products: [] }
+			carts.push(newCart)
 			await promises.writeFile(path, JSON.stringify(carts))
 		} catch (error) {
 			return error
 		}
 	}
+
+	// ----------
 
 	async getCartById(id) {
 		try {
 			const carts = await this.getCarts()
 			const cart = carts.find(cart => cart.id === id)
-			return cart.products
+			return cart
 		} catch (error) {
 			return error
 		}
 	}
 
-	async addProduct(cid, pid) {
-		try {
-			const carts = await this.getCarts()
-			const cart = carts.find(cart => cart.id === cid)
-			const productExiste = cart.products.find(product => product.id === pid)
-			let quantity
-			cart.products.push({
-				id: pid,
-				quantity: !productExiste ? 1 : quantity + 1
-			})
-			carts.push(cart)
-			await promises.writeFile(path, JSON.stringify(carts))
-		} catch (error) {
-			return error
+	// ----------
+
+	async addProductToCart(cid, pid) {
+		const carts = await this.getCarts()
+		const cartIndex = carts.findIndex(index => index.id === cid)
+		if (!carts[cartIndex].products) {
+			const newProduct = {product: pid, quantity: 1}
+			carts[cartIndex].products.push(newProduct)
+		} else {
+			carts[cartIndex].products.quantity++
 		}
+		await promises.writeFile(path, JSON.stringify(carts))
 	}
 }
 
-// async function test() {
-// 	const manager1 = new CartManager()
-// 	await manager1.createCart()
-// 	// const carts = await manager1.addProduct(1, 1)
-// 	console.log(carts)
-// }
-// test()
-
-export const manager1 = new CartManager()
+export const cartManager = new CartManager()

@@ -27,7 +27,7 @@ class ProductManager {
 			const products = await this.getProducts({})
 			let id
 			!products.length ? id = 1 : id = products[products.length - 1].id + 1
-			products.push({ id, ...product })
+			products.push({ id, ...product, status: true })
 			await promises.writeFile(path, JSON.stringify(products))
 		} catch (error) {
 			return error
