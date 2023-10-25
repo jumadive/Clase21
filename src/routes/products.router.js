@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { manager1 } from '../ProductManager.js'
+import { productsManager } from '../managers/productsManager.js'
 
 const router = Router()
 
@@ -7,7 +7,7 @@ const router = Router()
 
 router.get('/', async (req, res) => {
 	try {
-		const products = await manager1.getProducts(req.query)
+		const products = await productsManager.findAll()
 		res.status(200).json({ message: 'Products found', products })
 	} catch (error) {
 		res.status(500).json({ message: error.message })
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 router.get('/:pid', async (req, res) => {
 	const { pid } = req.params
 	try {
-		const product = await manager1.getProductById(+pid)
+		const product = await productsManager.findById(pid)
 		if (!product) {
 			return res.status(404).json({ message: 'Product not found' })
 		}
@@ -39,8 +39,8 @@ router.post("/", async (req, res) => {
 	}
 
 	try {
-		const response = await manager1.addProduct(req.body)
-		res.status(200).json({ message: "Product added", product: response })
+		const createdProduct = await productsManager.createOne(req.body)
+		res.status(200).json({ message: "Product added", product: createdProduct })
 	} catch (error) {
 		res.status(500).json({ message: error.message });
 	}
@@ -51,11 +51,11 @@ router.post("/", async (req, res) => {
 router.delete('/:pid', async (req, res) => {
 	const { pid } = req.params
 	try {
-		const response = await manager1.deleteProduct(+pid)
-		if (!response) {
+		const deletedProduct = await productsManager.deleteOne(pid)
+		if (!deletedProduct) {
 			return res.status(404).json({ message: 'Product not found' })
 		}
-		res.status(200).json({ message: "Product deleted", product: response })
+		res.status(200).json({ message: "Product deleted", product: deletedProduct })
 	} catch (error) {
 		res.status(500).json({ message: error.message })
 	}
@@ -66,8 +66,8 @@ router.delete('/:pid', async (req, res) => {
 router.put('/:pid', async (req, res) => {
 	const { pid } = req.params
 	try {
-		const response = await manager1.updateProduct(+pid, req.body)
-		if (!response) {
+		const updatedProduct = await productsManager.updateOne(pid, req.body)
+		if (!updatedProduct) {
 			return res.status(404).json({ message: 'Product not found' })
 		}
 		res.status(200).json({ message: 'Product Updated' })

@@ -1,1 +1,54 @@
-[{"id":1,"title":"Monitor","description":"HDMI","code":"103","price":100,"status":true,"stock":5,"category":"Informatica","thumbnail":["/img/monitor"]},{"id":2,"title":"Teclado","description":"Mecanico","code":"101","price":70,"status":true,"stock":20,"category":"Informatica","thumbnail":["/img/teclado"]},{"id":3,"title":"Mouse","description":"Inalambrico","code":"105","price":20,"status":true,"stock":100,"category":"Informatica","thumbnail":["/img/mouse"]}]
+[
+    {
+        "id": 1,
+        "title": "Monitor",
+        "description": "HDMI",
+        "code": "103",
+        "price": 100,
+        "status": true,
+        "stock": 5,
+        "category": "Informatica",
+        "thumbnail": [
+            "/img/monitor"
+        ]
+    },
+    {
+        "id": 2,
+        "title": "Teclado",
+        "description": "Mecanico",
+        "code": "101",
+        "price": 70,
+        "status": true,
+        "stock": 20,
+        "category": "Informatica",
+        "thumbnail": [
+            "/img/teclado"
+        ]
+    },
+    {
+        "id": 3,
+        "title": "Mouse",
+        "description": "Inalambrico",
+        "code": "105",
+        "price": 20,
+        "status": true,
+        "stock": 100,
+        "category": "Informatica",
+        "thumbnail": [
+            "/img/mouse"
+        ]
+    },
+    {
+        "id": 4,
+        "title": "Parlantes",
+        "description": "Bluetooth",
+        "code": "106",
+        "price": 25,
+        "stock": 100,
+        "category": "Informatica",
+        "thumbnail": [
+            "/img/parlantes"
+        ],
+        "status": true
+    }
+]

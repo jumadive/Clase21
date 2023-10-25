@@ -1,12 +1,12 @@
 import { Router } from 'express'
-import { cartManager } from '../CartManager.js'
+import { cartsManager } from '../managers/cartsManager.js'
 
 const router = Router()
 
 router.post('/', async (req, res) => {
 	try {
-		const response = await cartManager.createCart()
-		res.status(200).json({ message: 'Cart created', carts: response })
+		const cart = await cartsManager.createOne(req.body)
+		res.status(200).json({ message: 'Cart created', cart })
 	} catch (error) {
 		res.status(500).json({ message: error.message })
 	}
@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
 router.get('/:cid', async (req, res) => {
 	const { cid } = req.params
 	try {
-		const cart = await cartManager.getCartById(+cid)
+		const cart = await cartsManager.findById(cid)
 		if (!cart) {
 			return res.status(404).json({ message: 'Cart not found' })
 		}
@@ -32,7 +32,7 @@ router.get('/:cid', async (req, res) => {
 router.post('/:cid/product/:pid', async (req, res) => {
 	const { cid, pid } = req.params
 	try {
-		const response = await cartManager.addProductToCart(+cid, +pid)
+		const response = await cartsManager.createIndexes(cid, pid)
 		res.status(200).json({message: 'Product added', cart: response})
 	} catch (error) {
 		return res.status(500).json({message: error.message})
