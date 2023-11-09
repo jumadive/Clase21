@@ -13,10 +13,13 @@ router.get('/chat', async (req, res) => {
 })
 
 router.get('/products', async (req, res) => {
+    if (!req.session.user) {
+    return res.redirect("/login")
+    }
     try {
         const products = await productsManager.findAll(req.query)
         
-        res.render('products', {response: products.results})
+        res.render('products', {response: products.results, user: req.session.user})
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
@@ -47,12 +50,12 @@ router.get("/login", (req, res) => {
     res.render("signup");
   })
   
-  router.get("/profile", (req, res) => {
+  router.get("/products", (req, res) => {
     if (!req.session.user) {
       return res.redirect("/login");
     }
     console.log(req.session.user);
-    res.render("profile", { user: req.session.user });
+    res.render("products", { user: req.session.user });
   })
   
 export default router
