@@ -1,0 +1,26 @@
+
+<h2>Bienvenido {{response.first_name}}</h2>
+<h4>Email: {{response.email}} </h4>
+
+<button><a href="/api/sessions/signout">Sign Out</a></button>
+
+<h2>Productos</h2>
+<div class="prod-cont">
+  <ul class="prod">
+    {{#each response}}
+    <br>
+    <br>
+    <li>Id: {{this._id}}</li>
+    <li>Title: {{this.title}}</li>
+    <li>Description: {{this.description}}</li>
+    <li>Code: {{this.code}}</li>
+    <li>Price: {{this.price}}</li>
+    <li>Stock: {{this.stock}}</li>
+    <li>Category: {{this.category}}</li>
+
+
+    <button id="agregar" type="button">Agregar al Carrito</button>
+    {{/each}}
+
+  </ul>
+</div>

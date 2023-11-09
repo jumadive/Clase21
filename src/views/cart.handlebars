@@ -1,0 +1,40 @@
+<style>
+  * {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
+
+  h2 {
+    text-align: center;
+  }
+
+  .prod-cont {
+    display: flex;
+  }
+
+  .prod {
+    display: flex;
+    border: 1px solid black;
+    flex-direction: column;
+  }
+
+  li {
+    list-style: none;
+  }
+
+  p {
+    color: green;
+    font-family: Verdana;
+  }
+</style>
+
+<h1>Carrito</h1>
+
+<ul> 
+  <li>Carrito ID: {{response._id}}</li>
+  <li>Productos agregados: </li>
+  <ul>
+    {{#each response.products}}
+    <li>ID: {{product._id}}</li>
+    <li>Title: {{product.title}}</li>
+    {{/each}}
+  </ul>
