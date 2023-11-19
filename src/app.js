@@ -3,14 +3,17 @@ import handlebars from 'express-handlebars'
 import productsRouter from './routes/products.router.js'
 import cartsRouter from './routes/carts.router.js'
 import { __dirname } from './utils.js'
+import { Server } from "socket.io";
 import viewsRouter from './routes/views.router.js'
 import messagesRouter from './routes/messages.router.js'
 import sessionsRouter from "./routes/sessions.router.js"
-import './db/configDB.js'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import cookieRouter from "./routes/cookie.router.js"
+import './db/configDB.js'
+import passport from 'passport'
+import './passport.js'
 
 const app = express()
 
@@ -50,7 +53,28 @@ app.use('/api/messages', messagesRouter)
 app.use('/', viewsRouter)
 app.use('/api/cookie', cookieRouter);
 app.use('/api/sessions', sessionsRouter)
+//passport
+app.use(passport.initialize())
+app.use(passport.session())
 
-app.listen(8080, () => {
-	console.log("Escuchando Puerto 8080")
+
+const PORT = 8080
+
+const httpServer = app.listen(PORT, () => {
+  console.log(`Escuchando al puerto ${PORT}`)
 })
+
+const socketServer = new Server(httpServer)
+const messages = []
+socketServer.on("connection", (socket) => {
+//   console.log(`Cliente conectado: ${socket.id}`)
+  socket.on("newUser", (user) => {
+    socket.broadcast.emit("userConnected", user)
+    socket.emit("connected")
+  })
+  socket.on("message", (infoMessage) => {
+    messages.push(infoMessage)
+    socketServer.emit("chat", messages)
+  })
+})
+
