@@ -6,12 +6,12 @@ class ProductsManager {
 //         return results
 //     }
     //PAGINATE
-    async findAll(obj) {
+    async findAll(obj) {    
         
         const {limit=2, page=1, description="nacional"} = obj
         const response = await productsModel.paginate({description}, { limit, page})
         const info = {
-            status: response.status,
+            status: response.docs ? "success" : "error",
             payload: response.docs,
             totalPages: response.totalPages,
             nextPage: response.hasNextPage,

@@ -18,7 +18,6 @@ router.get('/products', async (req, res) => {
     }
     try {
         const products = await productsManager.findAll(req.query)
-        
         res.render('products', {response: products.results, user: req.session.user})
     } catch (error) {
         res.status(500).json({ message: error.message })
@@ -38,24 +37,30 @@ router.get('/cart/:cid', async (req, res) => {
 
 router.get("/login", (req, res) => {
     if (req.session.user) {
-      return res.redirect("/profile");
+      return res.redirect("/products");
     }
     res.render("login");
   })
   
   router.get("/signup", (req, res) => {
     if (req.session.user) {
-      return res.redirect("/profile");
+      return res.redirect("/products")
     }
-    res.render("signup");
+    res.render("signup")
   })
   
   router.get("/products", (req, res) => {
     if (!req.session.user) {
-      return res.redirect("/login");
+      return res.redirect("/login")
     }
     console.log(req.session.user);
-    res.render("products", { user: req.session.user });
+    res.render("products", { user: req.session.user })
   })
+
+  router.get("/error", (req, res) => {
+    res.render("error")
+  })
+
+
   
 export default router

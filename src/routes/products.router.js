@@ -3,7 +3,7 @@ import { productsManager } from '../managers/productsManager.js'
 
 const router = Router()
 
-// ----------
+// GET PRODUCTS
 
 router.get('/', async (req, res) => {
 	try {
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 	}
 })
 
-// ----------
+// GET PRODUCTS BY ID
 
 router.get('/:pid', async (req, res) => {
 	const { pid } = req.params
@@ -29,7 +29,7 @@ router.get('/:pid', async (req, res) => {
 	}
 })
 
-// ----------
+// ADD PRODUCT
 
 router.post("/", async (req, res) => {
 	const { title, description, code, price, stock, category } = req.body
@@ -46,7 +46,7 @@ router.post("/", async (req, res) => {
 	}
 })
 
-// ----------
+// DELETE PRODUCT
 
 router.delete('/:pid', async (req, res) => {
 	const { pid } = req.params
@@ -59,7 +59,7 @@ router.delete('/:pid', async (req, res) => {
 	} catch (error) {
 		res.status(500).json({ message: error.message })
 	}
-})
+})	
 
 // ----------
 

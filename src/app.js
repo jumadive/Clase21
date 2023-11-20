@@ -21,7 +21,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(__dirname + '/public'))
 app.use(cookieParser("SecretCookie"))
-//mongoLogin
+//mongoLogin		
 const URI = 
     'mongodb+srv://jumadive1991:xlnVUst8YvoWmQxA@cluster0.nodiakt.mongodb.net/ecommerce?retryWrites=true&w=majority'
 app.use(
